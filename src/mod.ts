@@ -3,13 +3,11 @@ import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { ImageRouter } from "@spt/routers/ImageRouter";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
-import { JsonUtil } from "@spt/utils/JsonUtil";
 import { Traders } from "@spt/models/enums/Traders";
 import { TraderHelper } from "../src/trader_helper";
 import traderJson = require("../db/trader.json");
@@ -72,15 +70,9 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     public postDBLoad(container: DependencyContainer): void
     {
         this.logger.debug(`[${this.mod}] postDb Loading... `);
-		
-        const databaseServer: DatabaseServer = container.resolve<DatabaseServer>("DatabaseServer");
-        const jsonUtil: JsonUtil = container.resolve<JsonUtil>("JsonUtil");
 
-        
-        const tables = databaseServer.getTables();
-
-        this.traderHelper.addTraderToDb(traderJson, tables, jsonUtil, assortJson);
-        this.traderHelper.addTraderToLocales(traderJson, tables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
+        this.traderHelper.addTraderToDb(traderJson, this.modHelper.dbTables, this.modHelper.jsonUtil, assortJson);
+        this.traderHelper.addTraderToLocales(traderJson, this.modHelper.dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
         
         this.modHelper.init(container, InitStage.POST_DB_LOAD);
         for (const item of customItems) 
