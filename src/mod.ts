@@ -28,7 +28,6 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
-    public modIdList: string[] = [];
     public configToClient = "/tyrian/mikhail_reznichenko/config_to_client";
 
     constructor() 
@@ -89,19 +88,18 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
         }
-        this.logger.debug(`[${this.mod}] items in modIdList: ${this.modIdList.length > 0 ? this.modIdList.join(", ") : "No items added"}`);
         this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
     {
-        const modIdList: string[] = [];
+        const configObject:Record<string, string[]> = { ItemIds: [] }
         for (const item of customItems) 
         {
-            modIdList.push(item.id);
+            configObject.ItemIds.push(item.id);
         }
-        return JSON.stringify(modIdList);
+        return JSON.stringify(configObject);
     }
 	
     private addSimpleItemToDb(itemTemplate: SimpleItem): void 
@@ -170,7 +168,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         this.modHelper.dbHandbook.Items.push({
             Id: itemTemplate.id,
             ParentId: "5b47574386f77428ca22b2ee",
-            Price: itemTemplate.fleaPrice,
+            Price: itemTemplate.fleaPrice
         });
 
         for (const langKey in this.modHelper.dbLocales.global) 
@@ -188,7 +186,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 
         const barter: IBarterScheme = {
             count: 5000,
-            _tpl: this.getCurrencyId("rub"),
+            _tpl: this.getCurrencyId("rub")
         };
 
         const item: IItem = {
@@ -200,8 +198,8 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
                 UnlimitedCount: true,
                 StackObjectsCount: 999999,
                 BuyRestrictionMax: 1,
-                BuyRestrictionCurrent: 0,
-            },
+                BuyRestrictionCurrent: 0
+            }
         };
 
         trader.assort.items.push(item);
