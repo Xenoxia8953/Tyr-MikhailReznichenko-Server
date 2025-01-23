@@ -18,9 +18,9 @@ import { FileUtils, InitStage, ModHelper } from "../src/mod_helper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { SimpleItem } from "./types";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
-import Items from "../db/items.json";
+import items from "../db/items.json";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
-const CustomItems = Items as SimpleItem[];
+const customItems = items as SimpleItem[];
 
 class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 {
@@ -28,8 +28,8 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
-    public modIdList: String[] = new Array();
-    public ConfigToClient = "/tyrian/mikhail_reznichenko/config_to_client";
+    public modIdList: string[] = [];
+    public configToClient = "/tyrian/mikhail_reznichenko/config_to_client";
 
     constructor() {
         this.mod = "Tyr-MikhailReznichenko"; 
@@ -59,8 +59,8 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 
         ragfairConfig.traders[traderJson._id] = false;
 		
-		this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
-        this.modHelper.registerStaticRoute(this.ConfigToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient);
+        this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
+        this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient);
 
         this.logger.debug(`[${this.mod}] preSpt Loaded`);
     }
@@ -82,21 +82,21 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         this.traderHelper.addTraderToDb(traderJson, tables, jsonUtil, assortJson);
         this.traderHelper.addTraderToLocales(traderJson, tables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
         
-		this.modHelper.init(container, InitStage.POST_DB_LOAD);
-		for (const item of CustomItems) {
+        this.modHelper.init(container, InitStage.POST_DB_LOAD);
+        for (const item of customItems) {
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
             this.modIdList.push(item.id);
         }
-		
+        this.logger.debug(`[${this.mod}] items in modIdList: ${this.modIdList.length > 0 ? this.modIdList.join(", ") : "No items added"}`);
         this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
 
-    static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper, modIdList: String[]): String {
+    static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper, modIdList: string[]): string {
         return JSON.stringify(modIdList);
     }
 	
-	private addSimpleItemToDb(itemTemplate: SimpleItem): void {
+    private addSimpleItemToDb(itemTemplate: SimpleItem): void {
         const itemClone: ITemplateItem = FileUtils.jsonClone<ITemplateItem>(this.modHelper.dbItems[itemTemplate.itemType]);
 		
         itemClone._id = itemTemplate.id;
@@ -106,47 +106,47 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         itemClone._props.Description = itemTemplate.description;
         itemClone._props.Width = itemTemplate.width;
         itemClone._props.Height = itemTemplate.height;
-		itemClone._props.Weight = itemTemplate.weight;
-		itemClone._props.Prefab.path = itemTemplate.bundlePath;
+        itemClone._props.Weight = itemTemplate.weight;
+        itemClone._props.Prefab.path = itemTemplate.bundlePath;
 		
-		if (itemTemplate.itemType === "5df8a4d786f77412672a1e3b"){
-			// Builders Backpack
-			itemClone._props.Grids[0]._props.cellsH = 7
-			itemClone._props.Grids[0]._props.cellsV = 128
-		}
-		if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482"){
-			// Container Items
-			if (itemTemplate.id === "678ff6a08def9feca215636e"){
-				//Large Ammo Box
-				itemClone._props.Grids[0]._props.cellsH = 18
-				itemClone._props.Grids[0]._props.cellsV = 12
-			}
-			if (itemTemplate.id === "678ff754fa2aee130bf269da"){
-				//Stubby Ammo Box
-				itemClone._props.Grids[0]._props.cellsH = 14
-				itemClone._props.Grids[0]._props.cellsV = 14
-			}
-			if (itemTemplate.id === "678ff749a1b18d76f8bb08d0"){
-				//Small Ammo Box
-				itemClone._props.Grids[0]._props.cellsH = 12
-				itemClone._props.Grids[0]._props.cellsV = 8
-			}
-			if (itemTemplate.id === "678ff771ed3fba9e8998c76f"){
-				//Large Weapon Case
-				itemClone._props.Grids[0]._props.cellsH = 18
-				itemClone._props.Grids[0]._props.cellsV = 12
-			}
-			if (itemTemplate.id === "678ff7ec91e978af07400932"){
-				//Massive Supply Case
-				itemClone._props.Grids[0]._props.cellsH = 24
-				itemClone._props.Grids[0]._props.cellsV = 24
-			}
-			if (itemTemplate.id === "678ff970bbb8bdc6515a87b2"){
-				//Fridge
-				itemClone._props.Grids[0]._props.cellsH = 16
-				itemClone._props.Grids[0]._props.cellsV = 16
-			}
-		}
+        if (itemTemplate.itemType === "5df8a4d786f77412672a1e3b"){
+            // Builders Backpack
+            itemClone._props.Grids[0]._props.cellsH = 7
+            itemClone._props.Grids[0]._props.cellsV = 128
+        }
+        if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482"){
+            // Container Items
+            if (itemTemplate.id === "678ff6a08def9feca215636e"){
+                //Large Ammo Box
+                itemClone._props.Grids[0]._props.cellsH = 18
+                itemClone._props.Grids[0]._props.cellsV = 12
+            }
+            if (itemTemplate.id === "678ff754fa2aee130bf269da"){
+                //Stubby Ammo Box
+                itemClone._props.Grids[0]._props.cellsH = 14
+                itemClone._props.Grids[0]._props.cellsV = 14
+            }
+            if (itemTemplate.id === "678ff749a1b18d76f8bb08d0"){
+                //Small Ammo Box
+                itemClone._props.Grids[0]._props.cellsH = 12
+                itemClone._props.Grids[0]._props.cellsV = 8
+            }
+            if (itemTemplate.id === "678ff771ed3fba9e8998c76f"){
+                //Large Weapon Case
+                itemClone._props.Grids[0]._props.cellsH = 18
+                itemClone._props.Grids[0]._props.cellsV = 12
+            }
+            if (itemTemplate.id === "678ff7ec91e978af07400932"){
+                //Massive Supply Case
+                itemClone._props.Grids[0]._props.cellsH = 24
+                itemClone._props.Grids[0]._props.cellsV = 24
+            }
+            if (itemTemplate.id === "678ff970bbb8bdc6515a87b2"){
+                //Fridge
+                itemClone._props.Grids[0]._props.cellsH = 16
+                itemClone._props.Grids[0]._props.cellsV = 16
+            }
+        }
 
         this.modHelper.dbItems[itemTemplate.id] = itemClone;
 
@@ -164,7 +164,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 	
-	private addSimpleItemToTraderAssort(itemTemplate: SimpleItem): void {
+    private addSimpleItemToTraderAssort(itemTemplate: SimpleItem): void {
         const trader = this.modHelper.dbTraders[this.getTraderId("mikhail")];
 
         const barter: IBarterScheme = {
@@ -187,10 +187,10 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 
         trader.assort.items.push(item);
         trader.assort.barter_scheme[itemTemplate.assortId] = [[barter]];
-        trader.assort.loyal_level_items[itemTemplate.assortId] = itemTemplate.loyaltyLevel;
+        //trader.assort.loyal_level_items[itemTemplate.assortId] = itemTemplate.loyaltyLevel;
     }
 	
-	getTraderId(traderName: string): string {
+    getTraderId(traderName: string): string {
         return ModHelper.traderIdsByName[traderName] ?? traderName;
     }
 
