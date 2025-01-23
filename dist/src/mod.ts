@@ -3,13 +3,11 @@ import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { ImageRouter } from "@spt/routers/ImageRouter";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
-import { JsonUtil } from "@spt/utils/JsonUtil";
 import { Traders } from "@spt/models/enums/Traders";
 import { TraderHelper } from "../src/trader_helper";
 import traderJson = require("../db/trader.json");
@@ -28,10 +26,10 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
-    public modIdList: string[] = [];
-    public configToClient = "/tyrian/mikhail_reznichenko/config_to_client";
+    public configToClient = "/tyrian/mikhailreznichenko/config_to_client";
 
-    constructor() {
+    constructor() 
+    {
         this.mod = "Tyr-MikhailReznichenko"; 
     }
 
@@ -72,31 +70,32 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     public postDBLoad(container: DependencyContainer): void
     {
         this.logger.debug(`[${this.mod}] postDb Loading... `);
-		
-        const databaseServer: DatabaseServer = container.resolve<DatabaseServer>("DatabaseServer");
-        const jsonUtil: JsonUtil = container.resolve<JsonUtil>("JsonUtil");
 
-        
-        const tables = databaseServer.getTables();
-
-        this.traderHelper.addTraderToDb(traderJson, tables, jsonUtil, assortJson);
-        this.traderHelper.addTraderToLocales(traderJson, tables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
+        this.traderHelper.addTraderToDb(traderJson, this.modHelper.dbTables, this.modHelper.jsonUtil, assortJson);
+        this.traderHelper.addTraderToLocales(traderJson, this.modHelper.dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
         
         this.modHelper.init(container, InitStage.POST_DB_LOAD);
-        for (const item of customItems) {
+        for (const item of customItems) 
+        {
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
-            this.modIdList.push(item.id);
         }
-		
         this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
 
-    static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper, modIdList: String[]): String {
-        return JSON.stringify(modIdList);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
+    {
+        const configObject:Record<string, string[]> = { ItemIds: [] }
+        for (const item of customItems) 
+        {
+            configObject.ItemIds.push(item.id);
+        }
+        return JSON.stringify(configObject);
     }
 	
-    private addSimpleItemToDb(itemTemplate: SimpleItem): void {
+    private addSimpleItemToDb(itemTemplate: SimpleItem): void 
+    {
         const itemClone: ITemplateItem = FileUtils.jsonClone<ITemplateItem>(this.modHelper.dbItems[itemTemplate.itemType]);
 		
         itemClone._id = itemTemplate.id;
@@ -109,39 +108,47 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         itemClone._props.Weight = itemTemplate.weight;
         itemClone._props.Prefab.path = itemTemplate.bundlePath;
 		
-        if (itemTemplate.itemType === "5df8a4d786f77412672a1e3b"){
+        if (itemTemplate.itemType === "5df8a4d786f77412672a1e3b")
+        {
             // Builders Backpack
             itemClone._props.Grids[0]._props.cellsH = 7
             itemClone._props.Grids[0]._props.cellsV = 128
         }
-        if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482"){
+        if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
+        {
             // Container Items
-            if (itemTemplate.id === "678ff6a08def9feca215636e"){
+            if (itemTemplate.id === "678ff6a08def9feca215636e")
+            {
                 //Large Ammo Box
                 itemClone._props.Grids[0]._props.cellsH = 18
                 itemClone._props.Grids[0]._props.cellsV = 12
             }
-            if (itemTemplate.id === "678ff754fa2aee130bf269da"){
+            if (itemTemplate.id === "678ff754fa2aee130bf269da")
+            {
                 //Stubby Ammo Box
                 itemClone._props.Grids[0]._props.cellsH = 14
                 itemClone._props.Grids[0]._props.cellsV = 14
             }
-            if (itemTemplate.id === "678ff749a1b18d76f8bb08d0"){
+            if (itemTemplate.id === "678ff749a1b18d76f8bb08d0")
+            {
                 //Small Ammo Box
                 itemClone._props.Grids[0]._props.cellsH = 12
                 itemClone._props.Grids[0]._props.cellsV = 8
             }
-            if (itemTemplate.id === "678ff771ed3fba9e8998c76f"){
+            if (itemTemplate.id === "678ff771ed3fba9e8998c76f")
+            {
                 //Large Weapon Case
                 itemClone._props.Grids[0]._props.cellsH = 18
                 itemClone._props.Grids[0]._props.cellsV = 12
             }
-            if (itemTemplate.id === "678ff7ec91e978af07400932"){
+            if (itemTemplate.id === "678ff7ec91e978af07400932")
+            {
                 //Massive Supply Case
                 itemClone._props.Grids[0]._props.cellsH = 24
                 itemClone._props.Grids[0]._props.cellsV = 24
             }
-            if (itemTemplate.id === "678ff970bbb8bdc6515a87b2"){
+            if (itemTemplate.id === "678ff970bbb8bdc6515a87b2")
+            {
                 //Fridge
                 itemClone._props.Grids[0]._props.cellsH = 16
                 itemClone._props.Grids[0]._props.cellsV = 16
@@ -153,10 +160,11 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         this.modHelper.dbHandbook.Items.push({
             Id: itemTemplate.id,
             ParentId: "5b47574386f77428ca22b2ee",
-            Price: itemTemplate.fleaPrice,
+            Price: itemTemplate.fleaPrice
         });
 
-        for (const langKey in this.modHelper.dbLocales.global) {
+        for (const langKey in this.modHelper.dbLocales.global) 
+        {
             const locale = this.modHelper.dbLocales.global[langKey];
             locale[`${itemTemplate.id} Name`] = itemTemplate.name;
             locale[`${itemTemplate.id} ShortName`] = itemTemplate.name;
@@ -164,12 +172,13 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         }
     }
 	
-    private addSimpleItemToTraderAssort(itemTemplate: SimpleItem): void {
+    private addSimpleItemToTraderAssort(itemTemplate: SimpleItem): void 
+    {
         const trader = this.modHelper.dbTraders[this.getTraderId("mikhail")];
 
         const barter: IBarterScheme = {
             count: 5000,
-            _tpl: this.getCurrencyId("rub"),
+            _tpl: this.getCurrencyId("rub")
         };
 
         const item: IItem = {
@@ -181,20 +190,22 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
                 UnlimitedCount: true,
                 StackObjectsCount: 999999,
                 BuyRestrictionMax: 1,
-                BuyRestrictionCurrent: 0,
-            },
+                BuyRestrictionCurrent: 0
+            }
         };
 
         trader.assort.items.push(item);
         trader.assort.barter_scheme[itemTemplate.assortId] = [[barter]];
-        trader.assort.loyal_level_items[itemTemplate.assortId] = itemTemplate.loyaltyLevel;
+        //trader.assort.loyal_level_items[itemTemplate.assortId] = itemTemplate.loyaltyLevel;
     }
 	
-    getTraderId(traderName: string): string {
+    getTraderId(traderName: string): string 
+    {
         return ModHelper.traderIdsByName[traderName] ?? traderName;
     }
 
-    getCurrencyId(currencyName: string): string {
+    getCurrencyId(currencyName: string): string 
+    {
         return ModHelper.currencyIdsByName[currencyName] ?? currencyName;
     }
 }

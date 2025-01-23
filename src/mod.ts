@@ -26,7 +26,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
-    public configToClient = "/tyrian/mikhail_reznichenko/config_to_client";
+    public configToClient = "/tyrian/mikhailreznichenko/config_to_client";
 
     constructor() 
     {
@@ -70,11 +70,15 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     public postDBLoad(container: DependencyContainer): void
     {
         this.logger.debug(`[${this.mod}] postDb Loading... `);
-
-        this.traderHelper.addTraderToDb(traderJson, this.modHelper.dbTables, this.modHelper.jsonUtil, assortJson);
-        this.traderHelper.addTraderToLocales(traderJson, this.modHelper.dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
         
         this.modHelper.init(container, InitStage.POST_DB_LOAD);
+
+        const dbTables = this.modHelper.dbTables;
+        const jsonUtil = this.modHelper.jsonUtil;
+
+        this.traderHelper.addTraderToDb(traderJson, dbTables, jsonUtil, assortJson);
+        this.traderHelper.addTraderToLocales(traderJson, dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
+
         for (const item of customItems) 
         {
             this.addSimpleItemToDb(item);
@@ -189,7 +193,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             upd: {
                 UnlimitedCount: true,
                 StackObjectsCount: 999999,
-                BuyRestrictionMax: 1,
+                BuyRestrictionMax: 10,
                 BuyRestrictionCurrent: 0
             }
         };
