@@ -14,11 +14,12 @@ import traderJson = require("../db/trader.json");
 import assortJson = require("../db/assort.json");
 import { FileUtils, InitStage, ModHelper } from "../src/mod_helper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
-import { SimpleItem } from "./types";
+import { SimpleItem} from "./types";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import items from "../db/items.json";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 const customItems = items as SimpleItem[];
+const itemData: string[] = [];
 
 class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 {
@@ -58,27 +59,31 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         ragfairConfig.traders[traderJson._id] = false;
 		
         this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
-        this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient);
+        this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient, MikhailReznichenko, true);
 
         this.logger.debug(`[${this.mod}] preSpt Loaded`);
     }
 
     /**
-     
       @param container Dependency container
      */
     public postDBLoad(container: DependencyContainer): void
     {
         this.logger.debug(`[${this.mod}] postDb Loading... `);
-
-        this.traderHelper.addTraderToDb(traderJson, this.modHelper.dbTables, this.modHelper.jsonUtil, assortJson);
-        this.traderHelper.addTraderToLocales(traderJson, this.modHelper.dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
         
         this.modHelper.init(container, InitStage.POST_DB_LOAD);
+
+        const dbTables = this.modHelper.dbTables;
+        const jsonUtil = this.modHelper.jsonUtil;
+
+        this.traderHelper.addTraderToDb(traderJson, dbTables, jsonUtil, assortJson);
+        this.traderHelper.addTraderToLocales(traderJson, dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
+
         for (const item of customItems) 
         {
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
+            itemData.push(item.id)
         }
         this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
@@ -86,12 +91,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
     {
-        const configObject:Record<string, string[]> = { ItemIds: [] }
-        for (const item of customItems) 
-        {
-            configObject.ItemIds.push(item.id);
-        }
-        return JSON.stringify(configObject);
+        return JSON.stringify(itemData);
     }
 	
     private addSimpleItemToDb(itemTemplate: SimpleItem): void 
@@ -189,7 +189,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             upd: {
                 UnlimitedCount: true,
                 StackObjectsCount: 999999,
-                BuyRestrictionMax: 1,
+                BuyRestrictionMax: 10,
                 BuyRestrictionCurrent: 0
             }
         };

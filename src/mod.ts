@@ -14,16 +14,17 @@ import traderJson = require("../db/trader.json");
 import assortJson = require("../db/assort.json");
 import { FileUtils, InitStage, ModHelper } from "../src/mod_helper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
-import { SimpleItem } from "./types";
+import { SimpleItem} from "./types";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import items from "../db/items.json";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 const customItems = items as SimpleItem[];
+const itemData: string[] = [];
 
 class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 {
     private mod: string;
-    private logger: ILogger;
+    //private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
     public configToClient = "/tyrian/mikhailreznichenko/config_to_client";
@@ -40,8 +41,8 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     public preSptLoad(container: DependencyContainer): void
     {
         
-        this.logger = container.resolve<ILogger>("WinstonLogger");
-        this.logger.debug(`[${this.mod}] preSpt Loading... `);
+        //this.logger = container.resolve<ILogger>("WinstonLogger");
+        //this.logger.debug(`[${this.mod}] preSpt Loading... `);
 
         const preSptModLoader: PreSptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
         const imageRouter: ImageRouter = container.resolve<ImageRouter>("ImageRouter");
@@ -58,18 +59,17 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         ragfairConfig.traders[traderJson._id] = false;
 		
         this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
-        this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient);
+        this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient, MikhailReznichenko, true);
 
-        this.logger.debug(`[${this.mod}] preSpt Loaded`);
+        //this.logger.debug(`[${this.mod}] preSpt Loaded`);
     }
 
     /**
-     
       @param container Dependency container
      */
     public postDBLoad(container: DependencyContainer): void
     {
-        this.logger.debug(`[${this.mod}] postDb Loading... `);
+        //this.logger.debug(`[${this.mod}] postDb Loading... `);
         
         this.modHelper.init(container, InitStage.POST_DB_LOAD);
 
@@ -83,19 +83,15 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         {
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
+            itemData.push(item.id)
         }
-        this.logger.debug(`[${this.mod}] postDb Loaded`);
+        //this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
     {
-        const configObject:Record<string, string[]> = { ItemIds: [] }
-        for (const item of customItems) 
-        {
-            configObject.ItemIds.push(item.id);
-        }
-        return JSON.stringify(configObject);
+        return JSON.stringify(itemData);
     }
 	
     private addSimpleItemToDb(itemTemplate: SimpleItem): void 
