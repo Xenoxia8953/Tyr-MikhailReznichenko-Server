@@ -78,12 +78,14 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 
         this.traderHelper.addTraderToDb(traderJson, dbTables, jsonUtil, assortJson);
         this.traderHelper.addTraderToLocales(traderJson, dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
-
+        for (const item of customItems) 
+        {
+            itemData.push(item.id)
+        }
         for (const item of customItems) 
         {
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
-            itemData.push(item.id)
         }
         //this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
@@ -111,8 +113,13 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         if (itemTemplate.itemType === "5df8a4d786f77412672a1e3b")
         {
             // Builders Backpack
-            itemClone._props.Grids[0]._props.cellsH = 7
-            itemClone._props.Grids[0]._props.cellsV = 128
+            itemClone._props.Grids[0]._props.cellsH = 6
+            itemClone._props.Grids[0]._props.cellsV = 64
+            itemClone._props.Grids[0]._props.filters[0].Filter = itemData
+            itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                "67893431dcad180324ddcc1d", 
+                "67893bbeafe8250ed0fe6770"
+            )
         }
         if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
         {
@@ -120,38 +127,78 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             if (itemTemplate.id === "678ff6a08def9feca215636e")
             {
                 //Large Ammo Box
-                itemClone._props.Grids[0]._props.cellsH = 18
-                itemClone._props.Grids[0]._props.cellsV = 12
+                itemClone._props.Grids[0]._props.cellsH = 10
+                itemClone._props.Grids[0]._props.cellsV = 13
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5485a8684bdc2da71d8b4567", 
+                    "543be5cb4bdc2deb348b4568",
+                    "5448bc234bdc2d3c308b4569"
+                )
             }
             if (itemTemplate.id === "678ff754fa2aee130bf269da")
             {
                 //Stubby Ammo Box
-                itemClone._props.Grids[0]._props.cellsH = 14
-                itemClone._props.Grids[0]._props.cellsV = 14
+                itemClone._props.Grids[0]._props.cellsH = 9
+                itemClone._props.Grids[0]._props.cellsV = 9
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5485a8684bdc2da71d8b4567", 
+                    "543be5cb4bdc2deb348b4568",
+                    "5448bc234bdc2d3c308b4569"
+                )
             }
             if (itemTemplate.id === "678ff749a1b18d76f8bb08d0")
             {
                 //Small Ammo Box
-                itemClone._props.Grids[0]._props.cellsH = 12
-                itemClone._props.Grids[0]._props.cellsV = 8
+                itemClone._props.Grids[0]._props.cellsH = 8
+                itemClone._props.Grids[0]._props.cellsV = 5
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5485a8684bdc2da71d8b4567", 
+                    "543be5cb4bdc2deb348b4568",
+                    "5448bc234bdc2d3c308b4569"
+                )
             }
             if (itemTemplate.id === "678ff771ed3fba9e8998c76f")
             {
                 //Large Weapon Case
-                itemClone._props.Grids[0]._props.cellsH = 18
-                itemClone._props.Grids[0]._props.cellsV = 12
+                itemClone._props.Grids[0]._props.cellsH = 10
+                itemClone._props.Grids[0]._props.cellsV = 13
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5448fe124bdc2da5018b4567", 
+                    "5422acb9af1c889c16000029",
+                    "5485a8684bdc2da71d8b4567",
+                    "543be5cb4bdc2deb348b4568",
+                    "5448bc234bdc2d3c308b4569"
+                )
             }
             if (itemTemplate.id === "678ff7ec91e978af07400932")
             {
                 //Massive Supply Case
-                itemClone._props.Grids[0]._props.cellsH = 24
-                itemClone._props.Grids[0]._props.cellsV = 24
+                itemClone._props.Grids[0]._props.cellsH = 10
+                itemClone._props.Grids[0]._props.cellsV = 26
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5448fe124bdc2da5018b4567", 
+                    "5422acb9af1c889c16000029",
+                    "5485a8684bdc2da71d8b4567",
+                    "543be5cb4bdc2deb348b4568",
+                    "5448bc234bdc2d3c308b4569",
+                    "5448eb774bdc2d0a728b4567"
+                )
             }
             if (itemTemplate.id === "678ff970bbb8bdc6515a87b2")
             {
                 //Fridge
-                itemClone._props.Grids[0]._props.cellsH = 16
-                itemClone._props.Grids[0]._props.cellsV = 16
+                itemClone._props.Grids[0]._props.cellsH = 10
+                itemClone._props.Grids[0]._props.cellsV = 13
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5448e8d04bdc2ddf718b4569",
+                    "5448e8d64bdc2dce718b4568"
+                )
             }
         }
 
