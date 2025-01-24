@@ -115,11 +115,10 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             // Builders Backpack
             itemClone._props.Grids[0]._props.cellsH = 6
             itemClone._props.Grids[0]._props.cellsV = 64
-            itemClone._props.Grids[0]._props.filters[0].Filter = []
+            itemClone._props.Grids[0]._props.filters[0].Filter = itemData
             itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                "5485a8684bdc2da71d8b4567", 
-                "543be5cb4bdc2deb348b4568",
-                "5448bc234bdc2d3c308b4569"
+                "67893431dcad180324ddcc1d", 
+                "67893bbeafe8250ed0fe6770"
             )
         }
         if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
@@ -166,7 +165,14 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
                 //Large Weapon Case
                 itemClone._props.Grids[0]._props.cellsH = 10
                 itemClone._props.Grids[0]._props.cellsV = 13
-                itemClone._props.Grids[0]._props.filters[0].Filter = itemData
+                itemClone._props.Grids[0]._props.filters[0].Filter = []
+                itemClone._props.Grids[0]._props.filters[0].Filter.push(
+                    "5448fe124bdc2da5018b4567", 
+                    "5422acb9af1c889c16000029",
+                    "5485a8684bdc2da71d8b4567",
+                    "543be5cb4bdc2deb348b4568",
+                    "5448bc234bdc2d3c308b4569"
+                )
             }
             if (itemTemplate.id === "678ff7ec91e978af07400932")
             {

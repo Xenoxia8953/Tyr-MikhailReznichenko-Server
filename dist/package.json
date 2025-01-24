@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "sptVersion": "~3.10",
     "loadBefore": [],
-    "loadAfter": [],
+    "loadAfter": ["LeaveItThere-Server", "HomeComforts-Server"],
     "incompatibilities": [],
     "isBundleMod": true,
     "main": "src/mod.js",
