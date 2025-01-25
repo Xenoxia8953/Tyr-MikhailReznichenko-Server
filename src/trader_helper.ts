@@ -72,7 +72,7 @@ export class TraderHelper
      * @param location Location of trader (e.g. "Here in the cat shop")
      * @param description Description of trader
      */
-    public addTraderToLocales(baseJson: any, tables: IDatabaseTables, fullName: string, firstName: string, nickName: string, location: string, description: string)
+    public addTraderToLocales(baseJson: any, tables: IDatabaseTables, fullName: string, firstName: string, nickName: string, location: string, description: string): void
     {
         // For each language, add locale for the new trader
         const locales = Object.values(tables.locales.global);

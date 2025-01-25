@@ -30,38 +30,50 @@ import { LootGenerator } from "@spt/generators/LootGenerator";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ILocations } from "@spt/models/spt/server/ILocations";
 
-export enum InitStage {
+export enum InitStage 
+    {
     PRE_SPT_LOAD,
     POST_DB_LOAD,
-    ALL,
+    ALL
 }
 
-export enum TraderId {
-    MIKHAIL = "678fab45ec8b6e5add71985a",
+export enum TraderId 
+    {
+    MIKHAIL = "678fab45ec8b6e5add71985a"
 }
 
-export enum CurrencyId {
+export enum CurrencyId 
+    {
     RUB = "5449016a4bdc2d6f028b456f",
     EUR = "569668774bdc2da2298b4568",
-    USD = "5696686a4bdc2da3298b456a",
+    USD = "5696686a4bdc2da3298b456a"
 }
 
-export class FileUtils {
-    static readJson<T>(targetPath: string, useRawPath: boolean = false): T {
+export class FileUtils 
+{
+    static readJson<T>(targetPath: string, useRawPath: boolean = false): T 
+    {
         let filePath: string;
 
-        if (useRawPath) {
+        if (useRawPath) 
+        {
             filePath = targetPath;
-        } else {
+        }
+        else 
+        {
             filePath = path.resolve(__dirname, targetPath);
         }
 
-        try {
+        try 
+        {
             const file = fs.readFileSync(filePath, "utf8");
 
             return JSON.parse(file) as T;
-        } catch (err: unknown) {
-            if (err instanceof Error) {
+        }
+        catch (err: unknown) 
+        {
+            if (err instanceof Error) 
+            {
                 console.log(err);
 
                 console.log(`Tried to read json at invalid path: ${path}`);
@@ -69,26 +81,37 @@ export class FileUtils {
         }
     }
 
-    static writeJson(data: object, targetPath: string, useRawPath: boolean = false): void {
+    static writeJson(data: object, targetPath: string, useRawPath: boolean = false): void 
+    {
         let filePath: string;
         let jsonString: string;
 
-        if (typeof data === "string") {
+        if (typeof data === "string") 
+        {
             jsonString = data as string;
-        } else {
+        }
+        else 
+        {
             jsonString = JSON.stringify(data, null, 4);
         }
 
-        if (useRawPath) {
+        if (useRawPath) 
+        {
             filePath = targetPath;
-        } else {
+        }
+        else 
+        {
             filePath = path.resolve(__dirname, targetPath);
         }
 
-        try {
+        try 
+        {
             fs.writeFileSync(filePath, jsonString, "utf8");
-        } catch (err: unknown) {
-            if (err instanceof Error) {
+        }
+        catch (err: unknown) 
+        {
+            if (err instanceof Error) 
+            {
                 console.log(err);
 
                 console.log(`Tried to write json at invalid path: ${path}`);
@@ -96,16 +119,21 @@ export class FileUtils {
         }
     }
 
-    static pathCombine(...paths: string[]): string {
+    static pathCombine(...paths: string[]): string 
+    {
         return path.normalize(path.join(...paths));
     }
 
-    static jsonClone<T>(data: object): T {
+    static jsonClone<T>(data: object): T 
+    {
         let jsonString: string;
 
-        if (typeof data === "string") {
+        if (typeof data === "string") 
+        {
             jsonString = data as string;
-        } else {
+        }
+        else 
+        {
             jsonString = JSON.stringify(data, null, 4);
         }
 
@@ -114,7 +142,8 @@ export class FileUtils {
     }
 }
 
-export class ModHelper {
+export class ModHelper 
+{
     public static modName: string = "Tyr-MikhailReznichenko";
 
     //useful paths
@@ -123,13 +152,13 @@ export class ModHelper {
     public static modsFolderPath: string = FileUtils.pathCombine(__dirname, "..", "..");
 
     public static traderIdsByName: Record<string, TraderId> = {
-        mikhail: TraderId.MIKHAIL,
+        mikhail: TraderId.MIKHAIL
     };
 
     public static currencyIdsByName: Record<string, CurrencyId> = {
         rub: CurrencyId.RUB,
         eur: CurrencyId.EUR,
-        usd: CurrencyId.USD,
+        usd: CurrencyId.USD
     };
 
     //initialized at preSptLoad
@@ -163,8 +192,10 @@ export class ModHelper {
     public importerUtil: ImporterUtil;
     public botGeneratorHelper: BotGeneratorHelper;
 
-    init(container: DependencyContainer, initStage: InitStage): void {
-        if (initStage === InitStage.PRE_SPT_LOAD || initStage === InitStage.ALL) {
+    init(container: DependencyContainer, initStage: InitStage): void 
+    {
+        if (initStage === InitStage.PRE_SPT_LOAD || initStage === InitStage.ALL) 
+        {
             this.container = container;
             this.preSptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
             this.imageRouter = container.resolve<ImageRouter>("ImageRouter");
@@ -181,7 +212,8 @@ export class ModHelper {
             this.eventOutputHolder = container.resolve<EventOutputHolder>("EventOutputHolder");
         }
 
-        if (initStage === InitStage.POST_DB_LOAD || initStage === InitStage.ALL) {
+        if (initStage === InitStage.POST_DB_LOAD || initStage === InitStage.ALL) 
+        {
             this.dbTables = container.resolve<DatabaseServer>("DatabaseServer").getTables();
             this.dbGlobals = this.dbTables.globals;
             this.dbItems = this.dbTables.templates.items;
@@ -205,8 +237,10 @@ export class ModHelper {
         callable: CallableFunction,
         boundClass: any = undefined, // any call to 'this' in callable will call boundClass
         outputModified: boolean = false
-    ): void {
-        if (boundClass) {
+    ): void 
+    {
+        if (boundClass) 
+        {
             callable = callable.bind(boundClass);
         }
 
@@ -215,27 +249,33 @@ export class ModHelper {
             [
                 {
                     url: routeURL,
-                    action: async (url: string, info: any, sessionId: string, output: string) => {
+                    action: async (url: string, info: any, sessionId: string, output: string) => 
+                    {
                         const Helper = new ModHelper();
                         Helper.init(this.container, InitStage.ALL);
 
                         const modifiedOutput = callable(url, info, sessionId, output, Helper);
 
-                        if (outputModified) {
+                        if (outputModified) 
+                        {
                             return modifiedOutput;
-                        } else {
+                        }
+                        else 
+                        {
                             return output || JSON.stringify({ value_not_needed: true });
                         }
                         return output;
-                    },
-                },
+                    }
+                }
             ],
             "aki"
         );
     }
 
-    log(logText: string, logColor: LogTextColor = LogTextColor.WHITE, dontLogModName: boolean = false): void {
-        switch (dontLogModName) {
+    log(logText: string, logColor: LogTextColor = LogTextColor.WHITE, dontLogModName: boolean = false): void 
+    {
+        switch (dontLogModName) 
+        {
             case true: {
                 this.logger.log(logText, logColor);
                 break;

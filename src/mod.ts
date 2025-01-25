@@ -1,7 +1,7 @@
 import { DependencyContainer } from "tsyringe";
 import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+//import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { ImageRouter } from "@spt/routers/ImageRouter";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -28,14 +28,14 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
     public configToClient = "/tyrian/mikhailreznichenko/config_to_client";
+    public traderId = "678fab45ec8b6e5add71985a";
 
     constructor() 
     {
-        this.mod = "Tyr-MikhailReznichenko"; 
+        this.mod = "tyr-mikhailreznichenko-server";
     }
 
     /**
-     
      * @param container Dependency container
      */
     public preSptLoad(container: DependencyContainer): void
@@ -51,7 +51,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         const ragfairConfig = configServer.getConfig<IRagfairConfig>(ConfigTypes.RAGFAIR);
 
         this.traderHelper = new TraderHelper();
-        this.traderHelper.registerProfileImage(traderJson, this.mod, preSptModLoader, imageRouter, "Mikhail_Reznichenko.jpg");
+        this.traderHelper.registerProfileImage(traderJson, this.mod, preSptModLoader, imageRouter, this.traderId+".jpg");
         this.traderHelper.setTraderUpdateTime(traderConfig, traderJson, 3600, 4000);
         
         Traders[traderJson._id] = traderJson._id;
@@ -65,7 +65,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     }
 
     /**
-      @param container Dependency container
+     * @param container Dependency container
      */
     public postDBLoad(container: DependencyContainer): void
     {
@@ -112,94 +112,35 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 		
         if (itemTemplate.itemType === "5df8a4d786f77412672a1e3b")
         {
-            // Builders Backpack
-            itemClone._props.Grids[0]._props.cellsH = 6
-            itemClone._props.Grids[0]._props.cellsV = 64
+            itemClone._props.Grids[0]._props.cellsH = itemTemplate.containerCellsH;
+            itemClone._props.Grids[0]._props.cellsV = itemTemplate.containerCellsV;
             itemClone._props.Grids[0]._props.filters[0].Filter = itemData
             itemClone._props.Grids[0]._props.filters[0].Filter.push(
                 "67893431dcad180324ddcc1d", 
                 "67893bbeafe8250ed0fe6770"
             )
         }
-        if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
+        else if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
         {
-            // Container Items
-            if (itemTemplate.id === "678ff6a08def9feca215636e")
-            {
-                //Large Ammo Box
-                itemClone._props.Grids[0]._props.cellsH = 10
-                itemClone._props.Grids[0]._props.cellsV = 13
-                itemClone._props.Grids[0]._props.filters[0].Filter = []
-                itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                    "5485a8684bdc2da71d8b4567", 
-                    "543be5cb4bdc2deb348b4568",
-                    "5448bc234bdc2d3c308b4569"
-                )
-            }
-            if (itemTemplate.id === "678ff754fa2aee130bf269da")
-            {
-                //Stubby Ammo Box
-                itemClone._props.Grids[0]._props.cellsH = 9
-                itemClone._props.Grids[0]._props.cellsV = 9
-                itemClone._props.Grids[0]._props.filters[0].Filter = []
-                itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                    "5485a8684bdc2da71d8b4567", 
-                    "543be5cb4bdc2deb348b4568",
-                    "5448bc234bdc2d3c308b4569"
-                )
-            }
-            if (itemTemplate.id === "678ff749a1b18d76f8bb08d0")
-            {
-                //Small Ammo Box
-                itemClone._props.Grids[0]._props.cellsH = 8
-                itemClone._props.Grids[0]._props.cellsV = 5
-                itemClone._props.Grids[0]._props.filters[0].Filter = []
-                itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                    "5485a8684bdc2da71d8b4567", 
-                    "543be5cb4bdc2deb348b4568",
-                    "5448bc234bdc2d3c308b4569"
-                )
-            }
-            if (itemTemplate.id === "678ff771ed3fba9e8998c76f")
-            {
-                //Large Weapon Case
-                itemClone._props.Grids[0]._props.cellsH = 10
-                itemClone._props.Grids[0]._props.cellsV = 13
-                itemClone._props.Grids[0]._props.filters[0].Filter = []
-                itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                    "5448fe124bdc2da5018b4567", 
-                    "5422acb9af1c889c16000029",
-                    "5485a8684bdc2da71d8b4567",
-                    "543be5cb4bdc2deb348b4568",
-                    "5448bc234bdc2d3c308b4569"
-                )
-            }
-            if (itemTemplate.id === "678ff7ec91e978af07400932")
-            {
-                //Massive Supply Case
-                itemClone._props.Grids[0]._props.cellsH = 10
-                itemClone._props.Grids[0]._props.cellsV = 26
-                itemClone._props.Grids[0]._props.filters[0].Filter = []
-                itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                    "5448fe124bdc2da5018b4567", 
-                    "5422acb9af1c889c16000029",
-                    "5485a8684bdc2da71d8b4567",
-                    "543be5cb4bdc2deb348b4568",
-                    "5448bc234bdc2d3c308b4569",
-                    "5448eb774bdc2d0a728b4567"
-                )
-            }
-            if (itemTemplate.id === "678ff970bbb8bdc6515a87b2")
-            {
-                //Fridge
-                itemClone._props.Grids[0]._props.cellsH = 10
-                itemClone._props.Grids[0]._props.cellsV = 13
-                itemClone._props.Grids[0]._props.filters[0].Filter = []
-                itemClone._props.Grids[0]._props.filters[0].Filter.push(
-                    "5448e8d04bdc2ddf718b4569",
-                    "5448e8d64bdc2dce718b4568"
-                )
-            }
+            itemClone._props.Grids[0]._props.cellsH = itemTemplate.containerCellsH;
+            itemClone._props.Grids[0]._props.cellsV = itemTemplate.containerCellsV;
+            itemClone._props.Grids[0]._props.filters[0].Filter = []
+            itemClone._props.Grids[0]._props.filters[0].Filter.push(...itemTemplate.containerFilters)
+        }
+        else if (itemTemplate.itemType === "656e0436d44a1bb4220303a0")
+        {
+            itemClone._props.Grids[0]._props.cellsH = 6;
+            itemClone._props.Grids[0]._props.cellsV = 6;
+            itemClone._props.Grids[0]._props.filters[0].Filter = []
+            itemClone._props.Grids[0]._props.filters[0].Filter.push(...itemTemplate.containerFilters)
+            itemClone._props.Grids[1]._props.cellsH = 3;
+            itemClone._props.Grids[1]._props.cellsV = 4;
+            itemClone._props.Grids[1]._props.filters[0].Filter = []
+            itemClone._props.Grids[1]._props.filters[0].Filter.push(...itemTemplate.containerFilters)
+            itemClone._props.Grids[2]._props.cellsH = 3;
+            itemClone._props.Grids[2]._props.cellsV = 4;
+            itemClone._props.Grids[2]._props.filters[0].Filter = []
+            itemClone._props.Grids[2]._props.filters[0].Filter.push(...itemTemplate.containerFilters)
         }
 
         this.modHelper.dbItems[itemTemplate.id] = itemClone;
@@ -221,7 +162,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 	
     private addSimpleItemToTraderAssort(itemTemplate: SimpleItem): void 
     {
-        const trader = this.modHelper.dbTraders[this.getTraderId("mikhail")];
+        const trader = this.modHelper.dbTraders[this.traderId];
 
         const barter: IBarterScheme = {
             count: 5000,
@@ -243,7 +184,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 
         trader.assort.items.push(item);
         trader.assort.barter_scheme[itemTemplate.assortId] = [[barter]];
-        //trader.assort.loyal_level_items[itemTemplate.assortId] = itemTemplate.loyaltyLevel;
+        trader.assort.loyal_level_items[itemTemplate.assortId] = itemTemplate.loyaltyLevel;
     }
 	
     getTraderId(traderName: string): string 

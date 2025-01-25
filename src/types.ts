@@ -11,4 +11,7 @@ export type SimpleItem = {
     fleaPrice: number;
     bundlePath: string;
     itemType: string;
+    containerCellsH: number;
+    containerCellsV: number;
+    containerFilters: string[];
 };

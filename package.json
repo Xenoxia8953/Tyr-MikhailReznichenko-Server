@@ -1,5 +1,5 @@
 {
-    "name": "MikhailReznichenko",
+    "name": "mikhailreznichenko-server",
     "version": "1.0.0",
     "sptVersion": "~3.10",
     "loadBefore": [],
@@ -24,7 +24,7 @@
         "typescript": "5.4",
         "winston": "3.12"
     },
-    "author": "Tyrian",
+    "author": "tyr",
     "contributors": [],
     "license": "MIT"
 }
