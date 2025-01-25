@@ -195,7 +195,8 @@
   "itemType": "5aafbde786f774389d0cbc0f",
   "containerCellsH": 7,
   "containerCellsV": 5,
-  "containerFilters": ["5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448fe124bdc2da5018b4567", "5448eb774bdc2d0a728b4567"]
+  "containerFilters": ["5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448fe124bdc2da5018b4567", "5448eb774bdc2d0a728b4567"],
+  "excludedFilters": ["678ff6a08def9feca215636e", "678ff754fa2aee130bf269da", "678ff749a1b18d76f8bb08d0"]
   },
   {
   "id": "678ff754fa2aee130bf269da", 
@@ -212,7 +213,8 @@
   "itemType": "5aafbde786f774389d0cbc0f",
   "containerCellsH": 6,
   "containerCellsV": 5,
-  "containerFilters": ["5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448fe124bdc2da5018b4567", "5448eb774bdc2d0a728b4567"]
+  "containerFilters": ["5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448fe124bdc2da5018b4567", "5448eb774bdc2d0a728b4567"],
+  "excludedFilters": ["678ff6a08def9feca215636e", "678ff754fa2aee130bf269da", "678ff749a1b18d76f8bb08d0"]
   },
   {
   "id": "678ff749a1b18d76f8bb08d0",
@@ -229,7 +231,8 @@
   "itemType": "5aafbde786f774389d0cbc0f",
   "containerCellsH": 6,
   "containerCellsV": 3,
-  "containerFilters": ["5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448fe124bdc2da5018b4567", "5448eb774bdc2d0a728b4567"]
+  "containerFilters": ["5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448fe124bdc2da5018b4567", "5448eb774bdc2d0a728b4567"],
+  "excludedFilters": ["678ff6a08def9feca215636e", "678ff754fa2aee130bf269da", "678ff749a1b18d76f8bb08d0"]
   },
   {
   "id": "678ff771ed3fba9e8998c76f",
@@ -246,7 +249,8 @@
   "itemType": "5c0a840b86f7742ffa4f2482",
   "containerCellsH": 8,
   "containerCellsV": 10,
-  "containerFilters": ["5448fe124bdc2da5018b4567", "5422acb9af1c889c16000029", "5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569"]
+  "containerFilters": ["5448fe124bdc2da5018b4567", "5422acb9af1c889c16000029", "5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569"],
+  "excludedFilters": ["678ff771ed3fba9e8998c76f"]
   },
   {
   "id": "678ff7ec91e978af07400932",
@@ -263,7 +267,8 @@
   "itemType": "5c0a840b86f7742ffa4f2482",
   "containerCellsH": 10,
   "containerCellsV": 12,
-  "containerFilters": ["5448fe124bdc2da5018b4567", "5422acb9af1c889c16000029", "5485a8684bdc2da71d8b4567", "543be5cb4bdc2deb348b4568", "5448bc234bdc2d3c308b4569", "5448eb774bdc2d0a728b4567", "543be5f84bdc2dd4348b456a", "543be5e94bdc2df1348b4568", "543be5dd4bdc2deb348b4569"]
+  "containerFilters": ["54009119af1c881c07000029"],
+  "excludedFilters": ["678ff7ec91e978af07400932"]
   },
   {
   "id": "678ff8278086fc1c3c5f2da9",
@@ -362,7 +367,8 @@
   "fleaPrice": 50000,
   "bundlePath": "furniture/fridge.bundle",
   "itemType": "656e0436d44a1bb4220303a0",
-  "containerFilters": ["5448e8d04bdc2ddf718b4569", "5448e8d64bdc2dce718b4568"]
+  "containerFilters": ["5448e8d04bdc2ddf718b4569", "5448e8d64bdc2dce718b4568"],
+  "excludedFilters": []
   },
   {
   "id": "678ffa029b058b02494b45f7",

@@ -14,4 +14,5 @@ export type SimpleItem = {
     containerCellsH: number;
     containerCellsV: number;
     containerFilters: string[];
+    excludedFilters: string[];
 };

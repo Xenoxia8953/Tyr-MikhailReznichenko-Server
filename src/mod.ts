@@ -31,7 +31,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     //private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
-    public configToClient = "/tyrian/mikhailreznichenko/config_to_client";
+    public itemIdsToClient = "/tyrian/mikhailreznichenko/itemids_to_client";
     public traderId = "678fab45ec8b6e5add71985a";
 
     constructor() 
@@ -63,7 +63,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         ragfairConfig.traders[traderJson._id] = false;
 		
         this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
-        this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient, MikhailReznichenko, true);
+        this.modHelper.registerStaticRoute(this.itemIdsToClient, "MikhailReznichenko-ItemIDsToClient", MikhailReznichenko.onItemIdsToClient, MikhailReznichenko, true);
         //this.logger.debug(`[${this.mod}] preSpt Loaded`);
     }
 
@@ -97,7 +97,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    static onConfigToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
+    static onItemIdsToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
     {
         return JSON.stringify(itemData);
     }
@@ -120,14 +120,13 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         {
             itemClone._props.Grids[0]._props.cellsH = itemTemplate.containerCellsH;
             itemClone._props.Grids[0]._props.cellsV = itemTemplate.containerCellsV;
-            itemClone._props.Grids[0]._props.filters[0].Filter = itemData
-            itemClone._props.Grids[0]._props.filters[0].Filter.push(
+            itemClone._props.Grids[0]._props.filters[0].Filter = [...itemData, 
                 "67893431dcad180324ddcc1d", 
                 "67893bbeafe8250ed0fe6770",
                 "678ff6a08def9feca215636e",
                 "678ff754fa2aee130bf269da",
                 "678ff749a1b18d76f8bb08d0"
-            )
+            ]
         }
         else if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
         {
