@@ -20,6 +20,10 @@ import items from "../db/items.json";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 const customItems = items as SimpleItem[];
 const itemData: string[] = [];
+const excludedTypes = [
+    "5aafbde786f774389d0cbc0f",
+    "5df8a4d786f77412672a1e3b"
+];
 
 class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 {
@@ -60,7 +64,6 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 		
         this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
         this.modHelper.registerStaticRoute(this.configToClient, "MikhailReznichenko-ConfigToClient", MikhailReznichenko.onConfigToClient, MikhailReznichenko, true);
-
         //this.logger.debug(`[${this.mod}] preSpt Loaded`);
     }
 
@@ -80,7 +83,10 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         this.traderHelper.addTraderToLocales(traderJson, dbTables, traderJson.name, "MikhailReznichenko", traderJson.nickname, traderJson.location, "Welcome, friend. Here, you'll only find strong and honest wood.");
         for (const item of customItems) 
         {
-            itemData.push(item.id)
+            if (!excludedTypes.includes(item.itemType))
+            {
+                itemData.push(item.id)
+            }
         }
         for (const item of customItems) 
         {
@@ -117,10 +123,20 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             itemClone._props.Grids[0]._props.filters[0].Filter = itemData
             itemClone._props.Grids[0]._props.filters[0].Filter.push(
                 "67893431dcad180324ddcc1d", 
-                "67893bbeafe8250ed0fe6770"
+                "67893bbeafe8250ed0fe6770",
+                "678ff6a08def9feca215636e",
+                "678ff754fa2aee130bf269da",
+                "678ff749a1b18d76f8bb08d0"
             )
         }
         else if (itemTemplate.itemType === "5c0a840b86f7742ffa4f2482")
+        {
+            itemClone._props.Grids[0]._props.cellsH = itemTemplate.containerCellsH;
+            itemClone._props.Grids[0]._props.cellsV = itemTemplate.containerCellsV;
+            itemClone._props.Grids[0]._props.filters[0].Filter = []
+            itemClone._props.Grids[0]._props.filters[0].Filter.push(...itemTemplate.containerFilters)
+        }
+        else if (itemTemplate.itemType === "5aafbde786f774389d0cbc0f")
         {
             itemClone._props.Grids[0]._props.cellsH = itemTemplate.containerCellsH;
             itemClone._props.Grids[0]._props.cellsV = itemTemplate.containerCellsV;
