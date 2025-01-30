@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 224305587
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: eeaaa8b38ba760a238a2f258498b85af
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 32fc69fdd6407f6ff1c87efeabdfbed3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0e88583c408674d4bad1d52c226ee09a, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 134
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Home Comforts/ItemCases/AmmoBoxes/ammo_box_small.prefab
+Dependencies:
+- F:/Desktop Stuff/TarkovProjects/EscapeFromRTarkov-SDK/EscapeFromTarkov-SDK-main/AssetBundles/StandaloneWindows/assets/commonassets/physics/physicsmaterials.bundle
+- F:/Desktop Stuff/TarkovProjects/EscapeFromRTarkov-SDK/EscapeFromTarkov-SDK-main/AssetBundles/StandaloneWindows/shaders

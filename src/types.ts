@@ -16,3 +16,14 @@ export type SimpleItem = {
     containerFilters: string[];
     excludedFilters: string[];
 };
+
+export type CraftableItem = {
+    craftName: string;
+    craftRequiredName: string;
+    craftRequired: string;
+    craftGiven: string;
+};
+
+export type WorkbenchCrafts = {
+    [workbenchId: string]: CraftableItem[];
+};

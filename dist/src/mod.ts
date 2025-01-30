@@ -1,7 +1,7 @@
 import { DependencyContainer } from "tsyringe";
 import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
-//import { ILogger } from "@spt/models/spt/utils/ILogger";
+import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { ImageRouter } from "@spt/routers/ImageRouter";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -14,11 +14,13 @@ import traderJson = require("../db/trader.json");
 import assortJson = require("../db/assort.json");
 import { FileUtils, InitStage, ModHelper } from "../src/mod_helper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
-import { SimpleItem} from "./types";
+import { SimpleItem, WorkbenchCrafts} from "./types";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import items from "../db/items.json";
+import crafts from "../db/crafts.json";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 const customItems = items as SimpleItem[];
+const customCrafts = crafts as WorkbenchCrafts[];
 const itemData: string[] = [];
 const excludedTypes = [
     "5aafbde786f774389d0cbc0f",
@@ -28,10 +30,11 @@ const excludedTypes = [
 class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 {
     private mod: string;
-    //private logger: ILogger;
+    private logger: ILogger;
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
     public itemIdsToClient = "/tyrian/mikhailreznichenko/itemids_to_client";
+    public craftsToClient = "/tyrian/mikhailreznichenko/crafts_to_client";
     public traderId = "678fab45ec8b6e5add71985a";
 
     constructor() 
@@ -45,8 +48,8 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     public preSptLoad(container: DependencyContainer): void
     {
         
-        //this.logger = container.resolve<ILogger>("WinstonLogger");
-        //this.logger.debug(`[${this.mod}] preSpt Loading... `);
+        this.logger = container.resolve<ILogger>("WinstonLogger");
+        this.logger.debug(`[${this.mod}] preSpt Loading... `);
 
         const preSptModLoader: PreSptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
         const imageRouter: ImageRouter = container.resolve<ImageRouter>("ImageRouter");
@@ -64,7 +67,8 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 		
         this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
         this.modHelper.registerStaticRoute(this.itemIdsToClient, "MikhailReznichenko-ItemIDsToClient", MikhailReznichenko.onItemIdsToClient, MikhailReznichenko, true);
-        //this.logger.debug(`[${this.mod}] preSpt Loaded`);
+        this.modHelper.registerStaticRoute(this.craftsToClient, "MikhailReznichenko-craftsToClient", MikhailReznichenko.oncraftsToClient, MikhailReznichenko, true);
+        this.logger.debug(`[${this.mod}] preSpt Loaded`);
     }
 
     /**
@@ -72,7 +76,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
      */
     public postDBLoad(container: DependencyContainer): void
     {
-        //this.logger.debug(`[${this.mod}] postDb Loading... `);
+        this.logger.debug(`[${this.mod}] postDb Loading... `);
         
         this.modHelper.init(container, InitStage.POST_DB_LOAD);
 
@@ -93,13 +97,18 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
             this.addSimpleItemToDb(item);
             this.addSimpleItemToTraderAssort(item);
         }
-        //this.logger.debug(`[${this.mod}] postDb Loaded`);
+        this.logger.debug(`[${this.mod}] postDb Loaded`);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static onItemIdsToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
     {
         return JSON.stringify(itemData);
+    }
+    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static oncraftsToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string {
+        return JSON.stringify(customCrafts);
     }
 	
     private addSimpleItemToDb(itemTemplate: SimpleItem): void 
