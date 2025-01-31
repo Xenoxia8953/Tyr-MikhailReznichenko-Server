@@ -410,7 +410,11 @@
   "cost": 50000, 
   "fleaPrice": 50000,
   "bundlePath": "furniture/reloading_bench.bundle",
-  "itemType": "5e2af29386f7746d4159f077"
+  "itemType": "5c0a840b86f7742ffa4f2482",
+  "containerCellsH": 4,
+  "containerCellsV": 4,
+  "containerFilters": ["54009119af1c881c07000029"],
+  "excludedFilters": []
   },
   {
   "id": "678ffb11d7976d97f6aaed04",

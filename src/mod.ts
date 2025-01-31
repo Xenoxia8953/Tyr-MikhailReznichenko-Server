@@ -20,8 +20,9 @@ import items from "../db/items.json";
 import crafts from "../db/crafts.json";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 const customItems = items as SimpleItem[];
-const customCrafts: WorkbenchCrafts[] = crafts as WorkbenchCrafts[];
+const customCrafts = crafts as WorkbenchCrafts;
 const itemData: string[] = [];
+const workbenchIds = Object.keys(customCrafts);
 const excludedTypes = [
     "5aafbde786f774389d0cbc0f",
     "5df8a4d786f77412672a1e3b"
@@ -34,6 +35,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
     private traderHelper: TraderHelper;
     public modHelper = new ModHelper();
     public itemIdsToClient = "/tyrian/mikhailreznichenko/itemids_to_client";
+    public workbenchIdsToClient = "/tyrian/mikhailreznichenko/workbenchids_to_client";
     public craftsToClient = "/tyrian/mikhailreznichenko/crafts_to_client";
     public traderId = "678fab45ec8b6e5add71985a";
 
@@ -67,6 +69,7 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
 		
         this.modHelper.init(container, InitStage.PRE_SPT_LOAD);
         this.modHelper.registerStaticRoute(this.itemIdsToClient, "MikhailReznichenko-ItemIDsToClient", MikhailReznichenko.onItemIdsToClient, MikhailReznichenko, true);
+        this.modHelper.registerStaticRoute(this.workbenchIdsToClient, "MikhailReznichenko-WorkbenchIDsToClient", MikhailReznichenko.onWorkbenchIdsToClient, MikhailReznichenko, true);
         this.modHelper.registerStaticRoute(this.craftsToClient, "MikhailReznichenko-craftsToClient", MikhailReznichenko.oncraftsToClient, MikhailReznichenko, true);
         this.logger.error(`[${this.mod}] preSpt Loaded`);
     }
@@ -101,31 +104,18 @@ class MikhailReznichenko   implements IPreSptLoadMod, IPostDBLoadMod
         if (Object.keys(customCrafts).length === 0) {
             this.logger.error("No crafts available.");
         }
-        customCrafts.forEach((workbenchData) => {
-            // Since workbenchData is an object, iterate over its keys
-            Object.keys(workbenchData).forEach(workbenchId => {
-                const craftItems = workbenchData[workbenchId];
-                
-                if (Array.isArray(craftItems)) {
-                    // Log the workbench ID
-                    this.logger.error(`Workbench ID: ${workbenchId}`);
-        
-                    // Iterate through each CraftableItem associated with the current workbench
-                    craftItems.forEach(item => {
-                        this.logger.error(`Craft Name: ${item.craftName}`);
-                        this.logger.error(`Required Name: ${item.craftRequiredName}`);
-                        this.logger.error(`Required ID: ${item.craftRequired}`);
-                        this.logger.error(`Given ID: ${item.craftGiven}`);
-                    });
-                }
-            });
-        });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static onItemIdsToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
     {
         return JSON.stringify(itemData);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static onWorkbenchIdsToClient(url: string, info: any, sessionId: string, output: string, helper: ModHelper): string 
+    {
+        return JSON.stringify(workbenchIds);
     }
     
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
